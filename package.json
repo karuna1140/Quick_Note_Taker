@@ -1,0 +1,14 @@
+
+{
+  "name": "quick-note-taker",
+  "version": "1.0.0",
+  "description": "Simple Note App",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --trace-warnings"
+  },
+  "devDependencies": {
+    "electron": "^41.0.3"
+  }
+}
