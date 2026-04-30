@@ -1,6 +1,7 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, Menu } = require('electron');
 const path = require('path');
 const fs = require('fs');
+const { constants } = require('buffer');
 
 let filePath;
 
@@ -20,6 +21,51 @@ function createWindow() {
 app.whenReady().then(() => {
     filePath = path.join(app.getPath('documents'), 'quicknote.txt');
     createWindow();
+
+    // NEW: App Menu
+    const menuTemplate = [
+        {
+            label: 'File',
+            submenu: [
+                {
+                    label: 'New Note',
+                    accelerator: 'CmdOrCtrl+N',
+                    click: () => {
+                        BrowserWindow.getFocusedWindow().webContents.send('menu-new-note');                    }
+                },
+            {
+                label: 'Open File',
+                accelerator: 'CmdOrCtrl+O',
+                click: () => {
+                    BrowserWindow.getFocusedWindow().webContents.send('menu-open-file');
+                }
+            },
+                    {
+                    label: 'Save',
+                    accelerator: 'CmdOrCtrl+S',
+                    click: () => {
+                        BrowserWindow.getFocusedWindow().webContents.send('menu-save');
+                }
+            },
+            {
+                label: 'Save As',
+                accelerator: 'CmdOrCtrl+Shift+S',
+                click: () => {
+                    BrowserWindow.getFocusedWindow().webContents.send('menu-save-as');
+                }
+            },
+            { type: 'separator' },
+            {
+                label: 'Quit',
+                accelerator: 'CmdOrCtrl+Q',
+                click: () => app.quit()
+            }
+        ]
+    }
+];
+const menu = Menu.buildFromTemplate(menuTemplate);
+Menu.setApplicationMenu(menu);
+
 });
 
 
