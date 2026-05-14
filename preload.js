@@ -2,9 +2,10 @@ const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('electronAPI', {
     saveNote: (text) => ipcRenderer.invoke('save-note', text),
-    saveAs: (text) => ipcRenderer.invoke('save-as', text),
     loadNote: () => ipcRenderer.invoke('load-note'),
-    deleteAll: () => ipcRenderer.invoke('delete-notes'),
-    confirmNewNote: () => ipcRenderer.invoke('confirm-new-note'), // ✅ FIXED
-    openFile: () => ipcRenderer.invoke('open-file')
+    saveAs: (text) => ipcRenderer.invoke('save-as', text),
+    newNote: () => ipcRenderer.invoke('new-note'),
+    openFile: () => ipcRenderer.invoke('open-file'),
+    smartSave: (text, filePath) => ipcRenderer.invoke('smart-save', text, filePath),
+    onMenuAction: (channel, callback) => ipcRenderer.on(channel, callback) // NEW
 });
